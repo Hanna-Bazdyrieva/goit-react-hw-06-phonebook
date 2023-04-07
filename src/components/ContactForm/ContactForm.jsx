@@ -1,12 +1,21 @@
 import { useState, memo } from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import { Box } from 'components/Box/Box';
 import { v4 as uuidv4 } from 'uuid';
 import { InputLabel, AddBtn, Input } from './ContactForm.styled';
 
-const ContactForm = ({addContact}) => {
+import {useDispatch} from 'react-redux'
+// import { addContact } from 'redux/contacts/contactsActions';
+import {add as addContact} from '../../redux/contactSlice'
+
+
+const ContactForm = (
+  // {addContact}
+  ) => {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
+
+  const dispatch = useDispatch()
 
   const handleInputChange = evt => {
     const { name, value } = evt.target;
@@ -32,7 +41,7 @@ const ContactForm = ({addContact}) => {
 
    const handleSubmitForm = evt => {
     evt.preventDefault();
-    addContact({ name, number,  id: uuidv4() });
+    dispatch(addContact({ name, number,  id: uuidv4() }));
     // console.log({ name, number,  id: uuidv4() })
     resetForm();
   };
@@ -80,9 +89,9 @@ const ContactForm = ({addContact}) => {
   );
 };
 
-ContactForm.propTypes = {
-  formSubmitHandler: PropTypes.func.isRequired,
-};
+// ContactForm.propTypes = {
+//   formSubmitHandler: PropTypes.func.isRequired,
+// };
 
 
 export default memo(ContactForm);
