@@ -1,12 +1,8 @@
 import { Box } from 'components/Box/Box';
 import ContactListItem from 'components/ContactListItem';
-// import PropTypes from 'prop-types';
 import { memo } from 'react';
 
-// import {useSelector} from'react-redux'
-
 const ContactList = ({contacts}) => {
-  // const contacts = useSelector((state) => state.contacts.items);
   
   return (
     <Box as="ul" mx="auto" my={2} px={6} py={4} bg="list" borderRadius="20px">
@@ -16,21 +12,10 @@ const ContactList = ({contacts}) => {
           id={id}
           name={name}
           number={number}
-          // deleteContact={deleteContact}
         />
       ))}
     </Box>
   );
 };
 
-// ContactList.propTypes = {
-//   contacts: PropTypes.arrayOf(
-//     PropTypes.shape({
-//       id: PropTypes.string.isRequired,
-//       name: PropTypes.string.isRequired,
-//       number: PropTypes.string.isRequired,
-//     })
-//   ),
-//   // deleteContact: PropTypes.func.isRequired,
-// };
 export default memo(ContactList);

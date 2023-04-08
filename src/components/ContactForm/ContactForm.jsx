@@ -1,21 +1,17 @@
 import { useState, memo } from 'react';
-// import PropTypes from 'prop-types';
 import { Box } from 'components/Box/Box';
 import { v4 as uuidv4 } from 'uuid';
 import { InputLabel, AddBtn, Input } from './ContactForm.styled';
 
-import {useDispatch} from 'react-redux'
-// import { addContact } from 'redux/contacts/contactsActions';
-import {add as addContact} from '../../redux/contactSlice'
+import { useDispatch, useSelector } from 'react-redux';
+import { add as addContact, getContactsItems } from '../../redux/contactSlice';
 
-
-const ContactForm = (
-  // {addContact}
-  ) => {
+const ContactForm = () => {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
+  const contacts = useSelector(getContactsItems);
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const handleInputChange = evt => {
     const { name, value } = evt.target;
@@ -39,10 +35,25 @@ const ContactForm = (
     setNumber('');
   };
 
-   const handleSubmitForm = evt => {
+  const isNameExists = () =>
+    contacts.find(contact => contact.name.toLowerCase() === name.toLowerCase());
+  const isNumberExists = () =>
+    contacts.find(contact => contact.number === number);
+
+  const handleSubmitForm = evt => {
     evt.preventDefault();
-    dispatch(addContact({ name, number,  id: uuidv4() }));
-    // console.log({ name, number,  id: uuidv4() })
+    const isName = isNameExists();
+    const isNumber = isNumberExists();
+
+    if (isName || isNumber) {
+      alert(
+        `This  ${isName ? `contact ${isName.name}` : ''} ${
+          isNumber ? `number ${isNumber.number}` : ''
+        } already exists`
+      );
+      return;
+    }
+    dispatch(addContact({ name, number, id: uuidv4() }));
     resetForm();
   };
 
@@ -58,11 +69,11 @@ const ContactForm = (
         bg="list"
         borderRadius="20px"
       >
-        <InputLabel htmlFor='nameInputId'>Name</InputLabel>
+        <InputLabel htmlFor="nameInputId">Name</InputLabel>
         <Input
           type="text"
           name="name"
-          id='nameInputId'
+          id="nameInputId"
           placeholder="Enter Name"
           value={name}
           onChange={handleInputChange}
@@ -88,10 +99,5 @@ const ContactForm = (
     </form>
   );
 };
-
-// ContactForm.propTypes = {
-//   formSubmitHandler: PropTypes.func.isRequired,
-// };
-
 
 export default memo(ContactForm);

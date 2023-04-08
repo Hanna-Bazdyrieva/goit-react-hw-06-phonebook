@@ -4,11 +4,7 @@ const theme = {
     container: 'rgb(247, 246, 237)',
     delete: '#f9abab',
     add: '#b6f9c9',
-
-    // notify: 'rgb(106, 17, 17)',
-    // section: 'rgb(244, 244, 215)',
-    // neutral: '#a9e1f9',
-    // default: '#f6f6f6',
+    warning: '#f3c8c2',
   },
   space: [0, 2, 4, 8, 16, 32, 64, 128, 252],
   fonts: {

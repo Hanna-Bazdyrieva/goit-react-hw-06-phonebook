@@ -1,19 +1,15 @@
 import { createSlice } from '@reduxjs/toolkit';
-
-const initialContacts = [
-  { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
-  { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
-  { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
-  { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
-];
+import { persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
+import contactsList from 'utils/contactsList';
 
 export const contactsSlice = createSlice({
   name: 'contacts',
   initialState: {
-     items: initialContacts,
-      filter: '',
-    },
-   reducers: {
+    items: contactsList,
+    filter: '',
+  },
+  reducers: {
     add(state, { payload }) {
       return {
         ...state,
@@ -27,21 +23,39 @@ export const contactsSlice = createSlice({
       };
     },
     changeFilter: {
-        reducer(state, { payload }) {
-          return {
-            ...state,
-            filter: payload,
-          };
-        },
-        prepare(value) {
-          return {
-            payload: value.toLowerCase(),
-          };
-        },
+      reducer(state, { payload }) {
+        return {
+          ...state,
+          filter: payload,
+        };
       },
+      prepare(value) {
+        return {
+          payload: value.toLowerCase(),
+        };
+      },
+    },
   },
 });
 
-export const { add, remove, changeFilter} = contactsSlice.actions;
+// persistedReducer
 
-export default contactsSlice.reducer;
+const persistContactsConfig = {
+  key: 'contacts',
+  storage,
+  // whitelist: ["items"],
+  blacklist: ['filter'],
+};
+
+const contactsReducer = persistReducer(
+  persistContactsConfig,
+  contactsSlice.reducer
+);
+
+// Selectors
+export const getFilter = state => state.contacts.filter;
+export const getContactsItems = state => state.contacts.items;
+
+export const { add, remove, changeFilter } = contactsSlice.actions;
+
+export default contactsReducer;
