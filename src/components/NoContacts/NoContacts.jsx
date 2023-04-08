@@ -1,7 +1,7 @@
 import { Box } from 'components/Box/Box';
 import { Title } from './NoContacts.styled';
 
-const NoContacts = () => {
+const NoContacts = ({ message }) => {
   return (
     <Box
       as="div"
@@ -12,7 +12,7 @@ const NoContacts = () => {
       bg="warning"
       borderRadius="10px"
     >
-      <Title>You have no contacts so far...</Title>
+      <Title>{message}</Title>
     </Box>
   );
 };

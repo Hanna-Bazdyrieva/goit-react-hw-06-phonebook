@@ -29,7 +29,9 @@ const App = () => {
             <ContactList contacts={filteredContacts} />
           </>
         )}
-        {contacts.length === 0 && <NoContacts />}
+        {contacts.length === 0 && (
+          <NoContacts message="You have no contacts so far..." />
+        )}
       </Section>
     </Section>
   );
